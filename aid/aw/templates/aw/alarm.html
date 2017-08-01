@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Django Test</title>
+</head>
+<body>
+ab ip<-------------> CC/IBM<-->Times,<--> web,<--->   fw,<--->    waf ,<--->    ips
+{% for o in alarm_out %}
+    {% for a in alarm %}
+    {% if a.source_ip == o.ip %}
+          <p><a href = http://127.0.0.1:8000/show/{{o.ip}} target='new'> {{o.ip}} </a>,[[ {{o.cc}} ,{{o.bl_ibm}} ]] ,{{o.times}} , [[web: {{o.web_ok}}  / {{o.web_rej}}  , fw: {{o.fw_pd}}  / {{o.fw_db}}  , waf: {{o.waf_ok}}  / {{o.waf_rej}}  , ips: {{o.ips_pd}}  / {{o.ips_db}} ]] </p>    
+    {% endif %}
+    {% endfor %}
+{% endfor %}
+kr ip<-------------> CC/IBM<-->Times,<--> web,<--->   fw,<--->    waf ,<--->    ips
+{% for i in alarm_kr %}
+    {% for a in alarm %}
+    {% if a.source_ip == i.ip %}
+          <p><a href = http://127.0.0.1:8000/show/{{i.ip}} target='new'> {{i.ip}} </a>,[[ {{i.cc}} ,{{i.bl_ibm}} ]] ,{{i.times}} , [[ web :{{i.web_ok}}  / {{i.web_rej}}  , fw : {{i.fw_pd}}  / {{i.fw_db}}  , waf : {{i.waf_ok}}  / {{i.waf_rej}}  , ips :{{i.ips_pd}}  / {{i.ips_db}} ]] </p>    
+    {% endif %}
+    {% endfor %}
+{% endfor %}
+</body>
+</html>

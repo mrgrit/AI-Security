@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>info</title>
+</head>
+<body>
+<p>{{day}} Firewall Scan Report</p>
+{% for t in fwscan_today %}        
+   {% for c in fwscan_ip_cache %}
+      {% if t.0 == c.0 %}     
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.0}} target='new'> {{t.0}} </a> Attacked <font color = 'red' > {{t.1}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in fwscan %}                                
+               {% if t.0 in i.0 %}
+                   {% for r in i %}  
+                       <p><font color = 'white'>---------</font> {{ forloop.counter }} ) {{r.2}}, {{r.3}} : {{r.1}} times</p>             
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+
+</body>
+</html>

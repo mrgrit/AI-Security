@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ip info</title>
+</head>
+<body>
+{% for ip in ip_cache %}
+   <p>{{ip.ip}} : [[ {{ip.cc}} ,{{ip.bl_ibm}} ]] ,{{ip.times}} , [[ {{ip.web_ok}}  / {{ip.web_rej}}  , {{ip.fw_pd}}  / {{ip.fw_db}}  , {{ip.waf_ok}}  / {{ip.waf_rej}}  , {{ip.ips_pd}}  /  {{ip.ips_db}} ]] </p>  
+<form method = "POST" class="post-form" action = "{% url 'bl' ip.ip %}" >
+    {% csrf_token %}
+    {{form.as_p}}  <button type="submit">Save</button>
+</form>
+{% endfor %}
+{% for info in result %}   
+    {{info.log_type}} , {{info.log_time}} , {{info.dest_ip}} , {{info.dest_port}} , {{info.result}} , {{info.method}} , {{info.times}} <br>
+{% endfor %}
+
+
+
+
+
+<form>
+</body>
+</html>

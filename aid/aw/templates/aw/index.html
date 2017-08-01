@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Alarm Info</title>
+</head>
+<body>
+<p>{{day}} Cyber Threat Report</p>
+<p> A. Firewall Analysis (<a href = http://127.0.0.1:8000/fwscan/{{day}} target='new'> more info </a>) </p>
+<p>F/W SCAN Top 20</p>
+{% for i in fwscan %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p> B. Threating IP Addresses (<a href = http://127.0.0.1:8000/thip/{{day}} target='new'> more info </a>) </p>
+{% for i in th_ip %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0.0}} target='new'> {{i.0.0}} </a> : [{{i.0.1}}  times],[country/BL:{{i.0.2}}/{{i.0.3}}],[write : {{i.0.4}}], [WEB: {{i.0.5}},{{i.0.6}} / FW: {{i.0.7}},{{i.0.8}} / WAF: {{i.0.9}},{{i.0.10}} / IPS: {{i.0.11}},{{i.0.12}}]</p> 
+{% endfor %}
+
+<p> C. Top IBM Score (<a href = http://127.0.0.1:8000/ibm/{{day}} target='new'> more info </a>) </p>
+{% for i in ibmScore %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/<font color='red'>{{i.3}}</font>],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p> D. Web Firewall Analysis (<a href = http://127.0.0.1:8000/waf/{{day}} target='new'> more info </a>) </p>
+<p>KeyWord #1 : IP Direct Access</p>
+{% for i in ipd %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #2 : Wordpress</p>
+{% for i in wp %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #3 : Method</p>
+{% for i in method %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+
+<p>KeyWord #4 : PHP</p>
+{% for i in php %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p> E. IPS Analysis (<a href = http://127.0.0.1:8000/ips/{{day}} target='new'> more info </a>) </p>
+<p>KeyWord #5 : XMLRPC</p>
+{% for i in xmlrpc %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #6 : Apache Struts</p>
+{% for i in struts %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #7 : ECSC</p>
+{% for i in ecsc %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #8 : NCSC</p>
+{% for i in ncsc %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #9 : WebShell Upload</p>
+{% for i in webshell %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #10 : Wanna Cry</p>
+{% for i in wannacry %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0}} target='new'> {{i.0}} </a> : [{{i.1}}  times],[country/BL:{{i.2}}/{{i.3}}],[write : {{i.4}}], [WEB: {{i.5}},{{i.6}} / FW: {{i.7}},{{i.8}} / WAF: {{i.9}},{{i.10}} / IPS: {{i.11}},{{i.12}}]</p> 
+{% endfor %}
+
+</body>
+</html>

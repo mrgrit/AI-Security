@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IBM Score</title>
+</head>
+<body>
+
+<p>TOP IBM Score( {{day}} )</p>
+{% for t in ibmScore_today %}        
+   {% for c in ibmScore_ip_cache %}      
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked {{t.4}} times :([{{c.1}}  times],[country/BL:{{c.2}}/<font color = 'red' >{{c.3}}</font>],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in ibmScore %}                                           
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p><font color = 'white'>---------</font> {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>                  
+                   {% endfor %}                 
+               {% endif %}                
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+</body>
+</html>

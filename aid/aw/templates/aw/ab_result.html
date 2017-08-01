@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Django Test</title>
+</head>
+<body>
+{% for result in result_ab %}
+    <p><a href = http://127.0.0.1:8000/show/{{result.ip}}> {{result.ip}} </a>,[[ {{result.cc}} ,{{result.bl_ibm}} ]] ,{{result.times}} , [[ {{result.web_ok}}  , {{result.web_rej}}  , {{result.fw_pd}}  , {{result.fw_db}}  , {{result.waf_ok}}  , {{result.waf_rej}}  , {{result.ips_pd}}  , {{result.ips_db}} ]] </p>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Alarm Info</title>
+</head>
+<body>
+<p>{{day}} Cyber Threat Report</p>
+<p>F/W SCAN Top 20</p>
+
+{% for t in fwscan_today %}        
+   {% for c in fwscan_ip_cache %}
+      {% if t.0 == c.0 %}     
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.0}} target='new'> {{t.0}} </a> Attacked <font color = 'red' > {{t.1}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in fwscan %}                                
+               {% if t.0 in i.0 %}
+                   {% for r in i %}  
+                       <p><font color = 'white'>---------</font> {{ forloop.counter }} ) {{r.2}}, {{r.3}} : {{r.1}} times</p>             
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>Threating IP</p>
+{% for i in th_ip %}
+<p>{{ forloop.counter }} . <a href = http://127.0.0.1:8000/show/{{i.0.0}} target='new'> {{i.0.0}} </a> : [{{i.0.1}}  times],[country/BL:{{i.0.2}}/{{i.0.3}}],[write : {{i.0.4}}], [WEB: {{i.0.5}},{{i.0.6}} / FW: {{i.0.7}},{{i.0.8}} / WAF: {{i.0.9}},{{i.0.10}} / IPS: {{i.0.11}},{{i.0.12}}]</p> 
+{% endfor %}
+
+<p>KeyWord #1 : IP Direct Access</p>
+{% for t in ipd_today %}        
+   {% for c in ipd_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in ipd %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #2 : Wordpress</p>
+{% for t in wp_today %}        
+   {% for c in wp_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in wp %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #3 : Method</p>
+{% for t in method_today %}        
+   {% for c in method_ip_cache %}      
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in method %}                                           
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p><font color = 'white'>---------</font> {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>                  
+                   {% endfor %}                 
+               {% endif %}                
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+
+<p>KeyWord #4 : PHP</p>
+{% for t in php_today %}        
+   {% for c in php_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in php %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #5 : XMLRPC</p>
+{% for t in xmlrpc_today %}        
+   {% for c in xmlrpc_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in xmlrpc %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #6 : Apache Struts</p>
+{% for t in struts_today %}        
+   {% for c in struts_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in struts %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #7 : ECSC</p>
+{% for t in ecsc_today %}        
+   {% for c in ecsc_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in ecsc %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #8 : NCSC</p>
+{% for t in ncsc_today %}        
+   {% for c in ncsc_ip_cache %}
+      {% if t.1 in c %}              
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in ncsc %}                             
+               {% if t.1 in i.1 %}
+                  {% if forloop.counter != forloop.counter %}
+                 {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+              {% endif %}
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #9 : WebShell Upload</p>
+{% for t in webshell_today %}        
+   {% for c in webshell_ip_cache %}      
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in webshell %}                                           
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p><font color = 'white'>---------</font> {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>                  
+                   {% endfor %}                 
+               {% endif %}                
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<p>KeyWord #10 : Wanna Cry</p>
+{% for t in wannacry_today %}        
+   {% for c in wannacry_ip_cache %}
+      {% if t.1 in c %}   
+            <p>{{ forloop.counter }} .<a href = http://127.0.0.1:8000/show/{{t.1}} target='new'> {{t.1}} </a> Attacked <font color = 'red' > {{t.4}} </font> times :([{{c.1}}  times],[country/BL:{{c.2}}/{{c.3}}],[write : {{c.4}}], [WEB: {{c.5}},{{c.6}} / FW: {{c.7}},{{c.8}} / WAF: {{c.9}},{{c.10}} / IPS: {{c.11}},{{c.12}}]) </p>       
+            {% for i in wannacry %}                             
+               {% if t.1 in i.1 %}
+                  {% for r in i %}  
+                       <p>--------- {{ forloop.counter }} ) detect : {{r.0}} / {{r.8}}, dest ip : {{r.2}} : dest port : {{r.3}}, {{r.4}} times, method : {{r.5}}, attack code : {{r.6}}</p>    
+                   {% endfor %}
+               {% endif %}            
+            {% endfor %}
+       {% endif %}
+    {% endfor %}
+{% endfor %}
+
+</body>
+</html>

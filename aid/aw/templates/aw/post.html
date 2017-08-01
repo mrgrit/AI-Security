@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Django Test</title>
+</head>
+<body>
+<form method = "POST" class="post-form">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Save</button>
+<form>
+</body>
+</html>
