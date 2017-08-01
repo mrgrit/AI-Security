@@ -1,12 +1,7 @@
 """
 Update 내용
-1) firewall 은 ip cache 만 쓰고 한줄한줄 insert하지 않도록 변경
-2) Report 기능 추가
-3) 예외 처리 적용
-4) Black List / White List 해볼까..?
-5) 모듈화 및 Package 적용 해볼까?
-next release
-1) log 쓰기
+[1.Aug.17] 학습 데이터 7월 28일까지로 수정 
+
 """
 
 import requests
@@ -26,6 +21,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment
+from openpyxl.styles import Border, Side
+from openpyxl.styles import PatternFill, Color
+
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
@@ -34,7 +34,7 @@ from sklearn.ensemble import RandomForestClassifier
 ###############   CONST   #############
 PCA_DIM = 10
 LEARNING_START_DATE = '2017-03-01'
-LEARNING_END_DATE = '2017-07-14'
+LEARNING_END_DATE = '2017-07-28'
 fw_db_times_limit = 10
 #######################################
 
@@ -1267,7 +1267,39 @@ def data_preprocessing(start_date, end_date):
     rf_res = rf_res[:,0]
     print("rf res => ", rf_res)
 
-    y_pred = do_nn(x_train, y_train, x_test, 5, 1e-5)
+    ins1 = np.union1d(rf_res, dt_res)
+    ins2 = np.union1d(ins1, svm_res)
+
+    test_data_s = 'select ip, bl_ibm, times, web_ok, web_rej, fw_pd, fw_db, waf_ok, waf_rej, ips_pd, ips_db, bl_dg_yn from aw_ip_cache where modi_time like %s and (ip_gubun = 1 or ip_gubun = 2) and bl_ibm is not null and bl_dg_yn=1'
+    curs.execute(test_data_s,(str(date.today())+'%',))
+    test_rows = curs.fetchall()    
+    test_df = pd.DataFrame(list(test_rows), columns=['ip', 'bl_ibm', 'times', 'web_ok', 'web_rej', 'fw_pd', 'fw_db', 'waf_ok', 'waf_rej', 'ips_pd', 'ips_db',' bl_dg_yn'])
+    test_df['bl_dg_yn'] = 0
+
+    
+
+    test_data_add = 'select ip, bl_ibm, times, web_ok, web_rej, fw_pd, fw_db, waf_ok, waf_rej, ips_pd, ips_db, bl_dg_yn from aw_ip_cache where ip=%s'
+    for ips in ins2 :
+        #print('ips[0] =>',ips)
+        curs.execute(test_data_add,(ips,))
+        add_rows = curs.fetchone()
+        #print(add_rows)
+        df2 = pd.DataFrame(list(add_rows),)
+        #df2['bl_dg_yn'] = 0
+        #print(df2)
+        test_df.append(df2)
+    print(test_df)
+
+    #test_df = set(test_df) # 중뷁 제거
+    test_df.drop_duplicates(['ip'],keep='last')
+    test_ip = test_df['ip']
+    
+    y_test = test_df['bl_dg_yn'].astype(int)    
+    x_test = np.asarray(test_df)
+    x_test = x_test[:,1:-2].astype(int)
+        
+
+    y_pred = do_nn(x_train, y_train, x_test, 7, 1e-5)
     
     test_y_label = y_pred
     report = np.column_stack((test_ip,test_y_label))
@@ -1276,21 +1308,94 @@ def data_preprocessing(start_date, end_date):
     nn_res = report[bl_idx]
     nn_res = nn_res[:,0]
     print('nn_res =>', nn_res)
+    return nn_res
 
-    ins1 = np.intersect1d(svm_res, rf_res)
-    ins2 = np.intersect1d(dt_res, rf_res)
-    ins3 = np.intersect1d(svm_res, dt_res)
+def report_xl(ai_bl):
+    today = date.today()
+    wb = Workbook()
+    ws = wb.active
+    ws.title='AI'
+    ws.merge_cells('A1:L1')
+    ws['A1'] = str(today) + ' Threating IP Information From AI'
+    ca1 = ws['A1']
+    ca1.font = Font(name='맑은 고딕', size = 15, bold=True)
+    ca1.alignment = Alignment(horizontal = 'center', vertical = 'center')
+    box = Border(left=Side(border_style="thin", 
+                   color='FF000000'),
+         right=Side(border_style="thin",
+                    color='FF000000'),
+         top=Side(border_style="thin",
+                  color='FF000000'),
+         bottom=Side(border_style="thin",
+                     color='FF000000'),
+         diagonal=Side(border_style="thin",
+                       color='FF000000'),
+         diagonal_direction=0,
+         outline=Side(border_style="thin",
+                      color='FF000000'),
+         vertical=Side(border_style="thin",
+                       color='FF000000'),
+         horizontal=Side(border_style="thin",
+                        color='FF000000')
+        )
+    ca1.border = box
+    ca1.fill = PatternFill(patternType='solid',fgColor=Color('FFC000'))
+
+    #ca2 = ws['A2:L2']
+    #ca2.font = Font(size = 11.5, bold=True)
+    #ca2.alignment = Alignment(horizontal = 'center', vertical = 'center')
+    #ca2.fill = PatternFill(patternType='solid',fgColor=Color('blue'))
+
+    ws['A2'] = 'IP'
+    ws['B2'] = '국가'
+    ws['C2'] = 'IBM Score'
+    ws['D2'] = '횟수'
+    ws['E2'] = '지속일수'    
+    ws['F2'] = 'WEB OK'
+    ws['G2'] = 'FW DR'
+    ws['H2'] = 'WAF OK'
+    ws['I2'] = 'WAF REJ'
+    ws['J2'] = 'IPS PD'
+    ws['K2'] = 'IPS DB'
+    ws['L2'] = 'SQL'
+    ws.freeze_panes = 'A3' # 셀 고정
+    curs = conn.cursor()
+    #times_today
+    #select ip, cc, bl_ibm,
+    #i = 0
+    se_ip_ca = 'select ip,cc,bl_ibm,web_ok,fw_db,waf_ok,waf_rej,ips_pd,ips_db,bl_dg_yn from aw_ip_cache where ip = %s'
+    se_ti = 'select sum(times) from aw_log_full where source_ip = %s and write_date = %s'
+    se_da = 'select count(distinct write_date) from aw_log_full where source_ip = %s'
     
-    ins4 = np.intersect1d(ins1,ins2)
-    ins5 = np.intersect1d(ins2,ins3)
-    ins6 = np.union1d(ins4,ins5)
-    ins7 = np.intersect1d(nn_res, ins6)
-    
-    return ins7
-    #print("DT accuracy: ", do_confusion(y_test, y_pred))
-    #print("F1 Score: ", do_f1(y_test, y_pred))
+                           
+    for i,ip in enumerate(ai_bl) :
+        curs.execute(se_ip_ca,(ip,))
+        bl_rows = curs.fetchall()        
 
+        curs.execute(se_ti,(ip, date.today()))        
+        ti = curs.fetchone()
+        
+        curs.execute(se_da,(ip,))
+        da = curs.fetchone()
+        print('i => ',i)       
+        ws['A'+str(i+3)] = bl_rows[0][0]
+        ws['B'+str(i+3)] = bl_rows[0][1]
+        ws['C'+str(i+3)] = bl_rows[0][2]
+        ws['D'+str(i+3)] = ti[0]
+        ws['E'+str(i+3)] = da[0]
+        ws['F'+str(i+3)] = bl_rows[0][3]
+        ws['G'+str(i+3)] = bl_rows[0][4]
+        ws['H'+str(i+3)] = bl_rows[0][5]
+        ws['I'+str(i+3)] = bl_rows[0][6]
+        ws['J'+str(i+3)] = bl_rows[0][7]
+        ws['K'+str(i+3)] = bl_rows[0][8]
+        ws['L'+str(i+3)] = bl_rows[0][9]
 
+            
+
+    filename = str(date.today()) + '_report.xls'
+    wb.save(filename)
+ 
     
  
 write_log('-----------ALARM LOG저장-----------')
@@ -1385,6 +1490,8 @@ ai_bl = data_preprocessing(LEARNING_START_DATE,LEARNING_END_DATE)
 print("AI 추천 Blacklist => ", ai_bl)
 write_log("AI 추천 Blacklist")
 write_log(str(ai_bl))
+ai_bl = np.array(ai_bl.tolist())
+report_xl(ai_bl)
 
 write_log('모든 프로세스 완료')
 
