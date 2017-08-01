@@ -38,7 +38,7 @@ LEARNING_END_DATE = '2017-07-28'
 fw_db_times_limit = 10
 #######################################
 
-conn = MySQLdb.connect('localhost','root','rhrnak#33','ais', charset = "utf8")
+conn = MySQLdb.connect('localhost','root','rhrnak','ais', charset = "utf8")
 
 # config file load
 conf = open("./ais.txt")
